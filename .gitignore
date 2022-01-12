@@ -1,6 +1,7 @@
 *.pyc
 *.swp
 *.swo
+*.idea
 
 build/
 dist/
