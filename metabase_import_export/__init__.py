@@ -356,8 +356,8 @@ def load_database_mapping(exported_databases):
 
                 else:
                     print(
-                        "Field '{}' doesn't exist on table '{}'.".format(
-                            exported_table["name"], TABLE_MAPPING[exported_table["id"]]
+                        "Exported field '{}' doesn't exist on table '{}'.".format(
+                            exported_field["name"], exported_table["name"]
                         )
                     )
                     sys.exit(1)
@@ -401,7 +401,19 @@ def import_collection(export_file, collection_id):
 
 def run_import(args):
     import_collection(args.import_file, args.collection_id)
+    # import_collection(args['import_file'], args['collection_id']) # for debug
 
 
 def run_export(args):
     export_collection(args.export_file, args.collection_id)
+
+# for debug
+# if __name__ == "__main__":
+#     set_metabase_url('https://metabase-dev.com')
+#     metabase_login('admin@localhost.com', 'Password')
+#
+#     args = {
+#         'import_file': '/Desktop/metabase-app-content.json',
+#         'collection_id': 1
+#     }
+#     run_import(args)
