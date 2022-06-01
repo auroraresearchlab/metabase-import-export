@@ -199,7 +199,7 @@ def create_dashboard(dashboard, **kwargs):
 
 def export_databases(collection_items):
     database_ids = set()
-    for item in collection_items:
+    for item in collection_items["data"]:
         if item["model"] == "card":
             database_ids.add(item["data"]["database_id"])
             database_ids.add(item["data"]["dataset_query"]["database"])
@@ -228,7 +228,7 @@ def export_collection(file_path, collection_id):
     check_if_collection_exists(collection_id)
 
     collection_items = get_collection_items(collection_id)
-    for item in collection_items:
+    for item in collection_items["data"]:
         model = item["model"]
         id = item["id"]
 
@@ -262,7 +262,7 @@ def map_databases(exported_databases):
         selection = None
 
         # select db automatically if name is matching
-        for db in dbs:
+        for db in dbs["data"]:
             if db["name"] == exported_db["name"]:
                 print(db["name"] + " is selected database to import the data exported")
                 selection = db["id"]
@@ -374,7 +374,7 @@ def import_collection(export_file, collection_id):
     check_if_collection_exists(collection_id)
 
     collection_items = get_collection_items(collection_id)
-    for item in collection_items:
+    for item in collection_items["data"]:
         model = item["model"]
         id = item["id"]
 
@@ -390,22 +390,23 @@ def import_collection(export_file, collection_id):
 
     match_dataset_configurations()
 
-    for item in export_data["collection_items"]:
+    for item in export_data["collection_items"]["data"]:
         if item["model"] == "card":
             create_card(item["data"], collection_id=collection_id)
 
-    for item in export_data["collection_items"]:
+    for item in export_data["collection_items"]["data"]:
         if item["model"] == "dashboard":
             create_dashboard(item["data"], collection_id=collection_id)
 
 
 def run_import(args):
-    import_collection(args.import_file, args.collection_id)
+    import_collection(args["import_file"], args["collection_id"])
     # import_collection(args['import_file'], args['collection_id']) # for debug
 
 
 def run_export(args):
-    export_collection(args.export_file, args.collection_id)
+    print(args)
+    export_collection(args["export_file"], args["collection_id"])
 
 # for debug
 # if __name__ == "__main__":
